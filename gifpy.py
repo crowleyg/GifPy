@@ -16,53 +16,36 @@ while True:
     if input_choice != "1" and input_choice != "2" and input_choice != "3":
         print("Invalid choice!")
     else:
+        converted_choice = int(input_choice)
+        
+        # Record screen
+        if converted_choice == 1:
+            output = cv2.VideoWriter("output.avi", cv2.VideoWriter_fourcc(*"XVID"), 10.0, (640, 480))
+            if not output.isOpened():
+                print("Cannot start screen recording; Try again")
+                continue
+
+        # Record webcam
+        elif converted_choice == 2:
+            cap = cv2.VideoCapture(0)
+            if not cap.isOpened():
+                print("Cannot open camera; Try again")
+                continue
+
+        # From video file
+        elif converted_choice == 3:
+            input_file = input("Enter the file name: ")
+            cap = cv2.VideoCapture(input_file)
+            if not cap.isOpened():
+                print("Cannot open file; Check the file name and try again")
+                continue
         break
-converted_choice = int(input_choice)
-
-# Record screen
-if converted_choice == 1:
-    output = cv2.VideoWriter("output.avi", cv2.VideoWriter_fourcc(*"XVID"), 10.0, (640, 480))
-    # frames = []
-    # image_count = 0
-    # while True:
-    #     img = pyautogui.screenshot()
-    #     frame = np.array(img)
-    #     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    #     output.write(frame)
-    #     cv2.imshow("GifPy", frame)
-    #     key = cv2.waitKey(0)
-    #     if key == ord("a"):
-    #         image_count += 1
-    #         frames.append(frame)
-    #         print("Adding new frame: ", image_count)
-    #     elif key == ord("q"):
-    #         break
-    # print("Total frames: ", image_count)
-
-    # print("Saving GIF...")
-    # with imageio.get_writer("output.gif", mode="I") as writer:
-    #     for frame in frames:
-    #         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    #         writer.append_data(rgb_frame)
-    # print("GIF Saved!")
-    # exit()
-
-# Record webcam
-elif converted_choice == 2:
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        print("Cannot open camera")
-        exit()
-
-# From video file
-elif converted_choice == 3:
-    input_file = input("Enter the file name: ")
-    cap = cv2.VideoCapture(input_file)
-
 
 # Record frames
 frames = []
 image_count = 0
+cv2.namedWindow("GifPy", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("GifPy", 1280, 720)
 while True:
 
     if converted_choice == 1:
@@ -71,8 +54,6 @@ while True:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         output.write(frame)
     else:
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         ret, frame = cap.read()
 
 
