@@ -1,3 +1,7 @@
 # Ignore venv
 /myvenv
 
+# Ignore testing files
+*.gif
+*.mp4
+*.avi
