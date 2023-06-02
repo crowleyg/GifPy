@@ -4,6 +4,23 @@ import imageio
 import pyautogui
 import datetime
 
+def record():
+    file_name = "output.avi"
+    fps = 10.0
+    out = cv2.VideoWriter(file_name, cv2.VideoWriter_fourcc(*"XVID"), fps, (1920, 1080))
+    cv2.namedWindow("Live", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("Live", 480, 270)
+    while True:
+        img = pyautogui.screenshot()
+        frame = np.array(img)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        out.write(frame)
+        cv2.imshow("GifPy Screen Capture", frame)
+        if cv2.waitKey(1) == ord("q"):
+            break
+    cv2.destroyAllWindows()
+    out.release()
+
 # Display menu
 print("**********GifPy - Gif Creator**********")
 print("How would you like to create your GIF?")
@@ -21,10 +38,8 @@ while True:
         
         # Record screen
         if converted_choice == 1:
-            output = cv2.VideoWriter("output.avi", cv2.VideoWriter_fourcc(*"XVID"), 10.0, (640, 480))
-            if not output.isOpened():
-                print("Cannot start screen recording; Try again")
-                continue
+            record()
+            cap = cv2.VideoCapture("output.avi")
 
         # Record webcam
         elif converted_choice == 2:
@@ -51,19 +66,12 @@ frames = []
 image_count = 0
 cv2.namedWindow("GifPy", cv2.WINDOW_NORMAL)
 cv2.resizeWindow("GifPy", 1280, 720)
-print("Press 'a' to add a single frame( or hold to add multiple frames")
+print("Press 'a' to add a single frame(or hold to add multiple frames)")
 print("Press any key to move to the next frame")
 print("Press 'q' to stop recording")
 while True:
 
-    if converted_choice == 1:
-        img = pyautogui.screenshot()
-        frame = np.array(img)
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        output.write(frame)
-    else:
-        ret, frame = cap.read()
-
+    ret, frame = cap.read()
 
     cv2.imshow("GifPy", frame)
     key = cv2.waitKey(0)
@@ -88,8 +96,9 @@ with imageio.get_writer(f"{file_name}", mode="I") as writer:
 print(f"GIF '{time_stamp}.gif' Saved!")
 
 # Release the capture
-if converted_choice == 1:
-    output.release()
-else:
-    cap.release()
+cap.release()
 cv2.destroyAllWindows()
+
+# TODO: Add option to add text to the GIF
+# TODO: fix issue when video ends before pressing 'q'
+# TODO: add explaination for screen recording
