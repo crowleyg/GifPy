@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import imageio
 import pyautogui
+import datetime
 
 # Display menu
 print("**********GifPy - Gif Creator**********")
@@ -41,11 +42,18 @@ while True:
                 continue
         break
 
+# Output file name
+time_stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+file_name = f"Saved_Gifs/{time_stamp}.gif"
+
 # Record frames
 frames = []
 image_count = 0
 cv2.namedWindow("GifPy", cv2.WINDOW_NORMAL)
 cv2.resizeWindow("GifPy", 1280, 720)
+print("Press 'a' to add a single frame( or hold to add multiple frames")
+print("Press any key to move to the next frame")
+print("Press 'q' to stop recording")
 while True:
 
     if converted_choice == 1:
@@ -68,12 +76,16 @@ while True:
 print("Total frames: ", image_count)
 
 # Save GIF
+if image_count == 0:
+    print("No frames added; GIF not saved")
+    exit()
+
 print("Saving GIF...")
-with imageio.get_writer("output.gif", mode="I") as writer:
+with imageio.get_writer(f"{file_name}", mode="I") as writer:
     for frame in frames:
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         writer.append_data(rgb_frame)
-print("GIF Saved!")
+print(f"GIF '{time_stamp}.gif' Saved!")
 
 # Release the capture
 if converted_choice == 1:
