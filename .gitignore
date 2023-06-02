@@ -5,5 +5,7 @@
 *.gif
 *.mp4
 *.avi
+
+# Ignore contents of Saved_Gifs
 Saved_Gifs/*
-!/Saved_Gifs/
+!Saved_Gifs/.gitkeep
