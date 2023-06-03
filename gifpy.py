@@ -107,7 +107,3 @@ cv2.destroyAllWindows()
 # Remove the output.avi file
 if os.path.exists("output.avi"):
     os.remove("output.avi")
-
-# TODO: Add option to add text to the GIF
-# TODO: file compression (100mb = GIPHY limit)
-# TODO: remove the output.avi file after saving the GIF
