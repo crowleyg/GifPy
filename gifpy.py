@@ -3,6 +3,7 @@ import numpy as np
 import imageio
 import pyautogui
 import datetime
+import os
 
 def screen_record():
     file_name = "output.avi"
@@ -103,7 +104,10 @@ print(f"GIF '{time_stamp}.gif' Saved!")
 cap.release()
 cv2.destroyAllWindows()
 
+# Remove the output.avi file
+if os.path.exists("output.avi"):
+    os.remove("output.avi")
+
 # TODO: Add option to add text to the GIF
-# TODO: add explaination for screen recording
 # TODO: file compression (100mb = GIPHY limit)
 # TODO: remove the output.avi file after saving the GIF
