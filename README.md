@@ -14,7 +14,7 @@ Before running the program, ensure that you have the following dependencies inst
 
 To install the dependencies, run the following command:
 
-        pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 Make sure you have pip installed and the requirements.txt file is in the same directory as the script.
 
@@ -26,7 +26,7 @@ Make sure you have pip installed and the requirements.txt file is in the same di
 
 3. Run the script using the following command:
 
-          python gifpy.py
+`python gifpy.py`
 
 4. The program will display a menu with options for creating a GIF:
    - Enter `1` to record your screen.
