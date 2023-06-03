@@ -4,12 +4,13 @@ import imageio
 import pyautogui
 import datetime
 
-def record():
+def screen_record():
     file_name = "output.avi"
     fps = 10.0
     out = cv2.VideoWriter(file_name, cv2.VideoWriter_fourcc(*"XVID"), fps, (1920, 1080))
-    cv2.namedWindow("Live", cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("Live", 480, 270)
+    cv2.namedWindow("GifPy Screen Capture", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("GifPy Screen Capture", 480, 270)
+    print("Screen Recording Started; Press 'q' to stop recording")
     while True:
         img = pyautogui.screenshot()
         frame = np.array(img)
@@ -28,7 +29,7 @@ print("1. Record your screen")
 print("2. Record your webcam")
 print("3. From a video file")
 
-# Get user choice
+# Get user choice.
 while True:
     input_choice = input("Enter your choice(1/2/3): ")
     if input_choice != "1" and input_choice != "2" and input_choice != "3":
@@ -36,19 +37,19 @@ while True:
     else:
         converted_choice = int(input_choice)
         
-        # Record screen
+        # Screen
         if converted_choice == 1:
-            record()
+            screen_record()
             cap = cv2.VideoCapture("output.avi")
 
-        # Record webcam
+        # Webcam
         elif converted_choice == 2:
             cap = cv2.VideoCapture(0)
             if not cap.isOpened():
                 print("Cannot open camera; Try again")
                 continue
 
-        # From video file
+        # Video file
         elif converted_choice == 3:
             input_file = input("Enter the file name: ")
             cap = cv2.VideoCapture(input_file)
@@ -72,6 +73,9 @@ print("Press 'q' to stop recording")
 while True:
 
     ret, frame = cap.read()
+    if not ret:
+        print("No more frames available; Exiting...")
+        break
 
     cv2.imshow("GifPy", frame)
     key = cv2.waitKey(0)
@@ -100,5 +104,6 @@ cap.release()
 cv2.destroyAllWindows()
 
 # TODO: Add option to add text to the GIF
-# TODO: fix issue when video ends before pressing 'q'
 # TODO: add explaination for screen recording
+# TODO: file compression (100mb = GIPHY limit)
+# TODO: remove the output.avi file after saving the GIF
